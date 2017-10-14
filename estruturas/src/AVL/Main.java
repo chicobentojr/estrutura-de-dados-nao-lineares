@@ -41,6 +41,25 @@ public class Main {
         arvore.inserir(75);
         arvore.inserir(90);
         arvore.inserir(80);
+        
+        arvore = new Arvore();
+        
+        arvore.inserir(50);
+        arvore.inserir(70);
+        arvore.inserir(20);
+        arvore.inserir(10);
+        arvore.inserir(30);
+        
+        arvore = new Arvore();
+        
+        arvore.inserir(40);
+        arvore.inserir(30);
+        arvore.inserir(60);
+        arvore.inserir(70);
+        arvore.inserir(35);
+        arvore.inserir(10);
+        arvore.inserir(12);
+        arvore.inserir(5);
 
         int comando = -1, chave;
         String valor;
@@ -56,8 +75,10 @@ public class Main {
             System.out.println("4 - Pós Ordem;");
             System.out.println("5 - Limpar Árvore;");
             System.out.println("6 - Obter <chave>;");
-            System.out.println("7 - Rotação Esquerda <chave>;");
-            System.out.println("8 - Rotação Direita <chave>;");
+            System.out.println("7 - Rotação Simples Esquerda <chave>;");
+            System.out.println("8 - Rotação Dupla Esquerda <chave>;");
+            System.out.println("9 - Rotação Simples Direita <chave>;");
+            System.out.println("10 - Rotação Dupla Direita <chave>;");
             System.out.println("0 - Sair:");
             System.out.print("\nDigite algum comando: ");
 
@@ -111,7 +132,13 @@ public class Main {
                     arvore.rotacaoEsquerdaSimples(chave);
                     break;
                 case 8:
+                    arvore.rotacaoEsquerdaDupla(chave);
+                    break;
+                case 9:
                     arvore.rotacaoDireitaSimples(chave);
+                    break;
+                case 10:
+                    arvore.rotacaoDireitaDupla(chave);
                     break;
                 default:
                     System.out.println("Comando inválido!");

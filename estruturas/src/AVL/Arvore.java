@@ -86,8 +86,12 @@ public class Arvore {
             }
             
             if (pai.getFatorBalanceamento() != 0) {
-                atualizarFatorBalanceamento(pai, operacao);
-            }
+                if (pai.getFatorBalanceamento() > 1 || pai.getFatorBalanceamento() < -1) {
+                    balancearArvore(pai);
+                } else {
+                    atualizarFatorBalanceamento(pai, operacao);
+                }
+            } 
         } else if (operacao == Arvore.REMOCAO) {
             
             if (no.getChave() > pai.getChave()) {
@@ -97,7 +101,7 @@ public class Arvore {
                 pai.setFatorBalanceamento(pai.getFatorBalanceamento() - 1);
             }
             
-            if (pai.getFatorBalanceamento() != 0) {
+            if (pai.getFatorBalanceamento() == 0) {
                 atualizarFatorBalanceamento(pai, operacao);
             }
         }
@@ -109,13 +113,11 @@ public class Arvore {
         if (no != null) rotacaoEsquerdaSimples(no);
     }
     
-    private void rotacaoEsquerdaSimples(No no)
+    private No rotacaoEsquerdaSimples(No no)
     {
         No direito = no.getDireito();
         No pai = no.getPai();
-        
         No novoDireito = direito.getEsquerdo();
-        
         
         if (pai != null){
             if (no.getChave() > pai.getChave())
@@ -125,15 +127,20 @@ public class Arvore {
         } else {
             this.setRaiz(direito);
         }
-        
+        direito.setFatorBalanceamento(0);
         direito.setPai(pai);
         direito.setEsquerdo(no);
+        
+        no.setFatorBalanceamento(0);
         no.setPai(direito);
         no.setDireito(novoDireito);
 
         if (novoDireito != null) {
+            novoDireito.setFatorBalanceamento(0);
             novoDireito.setPai(no);
         }
+        
+        return no;
         
     }
     
@@ -143,13 +150,11 @@ public class Arvore {
         if (no != null) rotacaoDireitaSimples(no);
     }
     
-    private void rotacaoDireitaSimples(No no)
+    private No rotacaoDireitaSimples(No no)
     {
         No esquerdo = no.getEsquerdo();
         No pai = no.getPai();
-        
         No novoEsquerdo = esquerdo.getDireito();
-        
         
         if (pai != null){
             if (no.getChave() > pai.getChave())
@@ -159,16 +164,84 @@ public class Arvore {
         } else {
             this.setRaiz(esquerdo);
         }
-        
+        esquerdo.setFatorBalanceamento(0);
         esquerdo.setPai(pai);
         esquerdo.setDireito(no);
+        
+        no.setFatorBalanceamento(0);
         no.setPai(esquerdo);
         no.setEsquerdo(novoEsquerdo);
 
         if (novoEsquerdo != null) {
+            novoEsquerdo.setFatorBalanceamento(0);
             novoEsquerdo.setPai(no);
         }
+        return no;
+    }
+    
+    public void rotacaoEsquerdaDupla(int chave)
+    {
+        No no = this.obter(chave);
+        if (no != null) rotacaoEsquerdaDupla(no);
+    }
+    
+    private No rotacaoEsquerdaDupla(No no)
+    {
+        this.rotacaoDireitaSimples(no.getDireito());
+        return this.rotacaoEsquerdaSimples(no);
+    }
+    
+    public void rotacaoDireitaDupla(int chave)
+    {
+        No no = this.obter(chave);
+        if (no != null) rotacaoDireitaDupla(no);
+    }
+    
+    private No rotacaoDireitaDupla(No no)
+    {
+        No esquerdo = no.getEsquerdo();
+        this.rotacaoEsquerdaSimples(esquerdo);
+        this.rotacaoDireitaSimples(no);
         
+        No segundoEsquerdo = esquerdo.getEsquerdo();
+        if (segundoEsquerdo != null) {
+            no.setFatorBalanceamento(no.getFatorBalanceamento() - 1);
+            //esquerdo.setFatorBalanceamento(esquerdo.getFatorBalanceamento() + 1);
+            
+            No novoDireito = esquerdo.getDireito();
+            if (novoDireito != null) {
+                novoDireito = novoDireito.getDireito();
+                if (novoDireito != null) {
+                    novoDireito.setFatorBalanceamento(-1);
+                }
+            }
+        }
+        return no;
+    }
+    
+    private void balancearArvore(No no)
+    {
+        int fator = no.getFatorBalanceamento();
+        
+        switch (fator) {
+            case 2:
+                if (no.getEsquerdo() != null && no.getEsquerdo().getFatorBalanceamento() < 0) {
+                    this.rotacaoDireitaDupla(no);
+                    
+                } else {
+                    this.rotacaoDireitaSimples(no);
+                }
+                break;
+            case -2:
+                if (no.getDireito()!= null && no.getDireito().getFatorBalanceamento() > 0) {
+                    this.rotacaoEsquerdaDupla(no);
+                    
+                } else {
+                    this.rotacaoEsquerdaSimples(no);
+                }
+                break;
+                    
+        }
     }
     
     public void inserir(int chave)
