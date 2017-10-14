@@ -15,6 +15,9 @@ import java.util.Scanner;
  */
 public class Arvore {
     
+    public static int INSERCAO = 1;
+    public static int REMOCAO = -1;
+    
     private No raiz;
     private int tamanho;
     
@@ -37,44 +40,7 @@ public class Arvore {
     {
         return this.getRaiz() == null;
     }
-
-    public void inserir(int chave)
-    {
-        this.inserir(chave, null);
-    }
     
-    public void inserir(int chave, Object valor)
-    {
-        this.tamanho++;
-        No novoNo = new No(chave, valor);
-
-        if (this.getRaiz() == null)
-        {
-            this.setRaiz(novoNo);
-            return;
-        }
-
-        No no = this.obter(chave);
-
-        if (no.getChave() != chave)
-        {
-            novoNo.setPai(no);
-
-            if (chave > no.getChave())
-            {
-                no.setDireito(novoNo);
-            }
-            else
-            {
-                no.setEsquerdo(novoNo);
-            }
-        }
-        else
-        {
-            no.setValor(valor);
-        }
-    }
-
     public No obter(int chave)
     {
         if (this.getRaiz() == null)
@@ -105,6 +71,144 @@ public class Arvore {
         return null;
     }
 
+    public void atualizarFatorBalanceamento(No no, int operacao)
+    {
+        No pai = no.getPai();
+        if (no == null || pai == null) return;
+        
+        if (operacao == Arvore.INSERCAO) {
+            
+            if (no.getChave() > pai.getChave()) {
+                pai.setFatorBalanceamento(pai.getFatorBalanceamento() - 1);
+            }
+            else  {
+                pai.setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
+            }
+            
+            if (pai.getFatorBalanceamento() != 0) {
+                atualizarFatorBalanceamento(pai, operacao);
+            }
+        } else if (operacao == Arvore.REMOCAO) {
+            
+            if (no.getChave() > pai.getChave()) {
+                pai.setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
+            }
+            else  {
+                pai.setFatorBalanceamento(pai.getFatorBalanceamento() - 1);
+            }
+            
+            if (pai.getFatorBalanceamento() != 0) {
+                atualizarFatorBalanceamento(pai, operacao);
+            }
+        }
+    }
+
+    public void rotacaoEsquerdaSimples(int chave)
+    {
+        No no = this.obter(chave);
+        if (no != null) rotacaoEsquerdaSimples(no);
+    }
+    
+    private void rotacaoEsquerdaSimples(No no)
+    {
+        No direito = no.getDireito();
+        No pai = no.getPai();
+        
+        No novoDireito = direito.getEsquerdo();
+        
+        
+        if (pai != null){
+            if (no.getChave() > pai.getChave())
+                pai.setDireito(direito);
+            else
+                pai.setEsquerdo(direito);
+        } else {
+            this.setRaiz(direito);
+        }
+        
+        direito.setPai(pai);
+        direito.setEsquerdo(no);
+        no.setPai(direito);
+        no.setDireito(novoDireito);
+
+        if (novoDireito != null) {
+            novoDireito.setPai(no);
+        }
+        
+    }
+    
+    public void rotacaoDireitaSimples(int chave)
+    {
+        No no = this.obter(chave);
+        if (no != null) rotacaoDireitaSimples(no);
+    }
+    
+    private void rotacaoDireitaSimples(No no)
+    {
+        No esquerdo = no.getEsquerdo();
+        No pai = no.getPai();
+        
+        No novoEsquerdo = esquerdo.getDireito();
+        
+        
+        if (pai != null){
+            if (no.getChave() > pai.getChave())
+                pai.setDireito(esquerdo);
+            else
+                pai.setEsquerdo(esquerdo);
+        } else {
+            this.setRaiz(esquerdo);
+        }
+        
+        esquerdo.setPai(pai);
+        esquerdo.setDireito(no);
+        no.setPai(esquerdo);
+        no.setEsquerdo(novoEsquerdo);
+
+        if (novoEsquerdo != null) {
+            novoEsquerdo.setPai(no);
+        }
+        
+    }
+    
+    public void inserir(int chave)
+    {
+        this.inserir(chave, null);
+    }
+    
+    public void inserir(int chave, Object valor)
+    {
+        this.tamanho++;
+        No novoNo = new No(chave, valor);
+
+        if (this.getRaiz() == null)
+        {
+            this.setRaiz(novoNo);
+            return;
+        }
+
+        No no = this.obter(chave);
+
+        if (no.getChave() != chave)
+        {
+            novoNo.setPai(no);
+
+            if (chave > no.getChave())
+            {
+                no.setDireito(novoNo);
+            }
+            else
+            {
+                no.setEsquerdo(novoNo);
+            }
+            atualizarFatorBalanceamento(novoNo, INSERCAO);
+        }
+        else
+        {
+            no.setValor(valor);
+        }
+    }
+    
     public No remover(int chave)
     {
         if (this.getRaiz() == null)
@@ -148,6 +252,7 @@ public class Arvore {
             else if (no.getEsquerdo() != null)
             {
                 No removido = no;
+                atualizarFatorBalanceamento(no, REMOCAO);
 
                 if (no.getPai() == null)
                 {
@@ -171,7 +276,7 @@ public class Arvore {
             else if (no.getDireito() != null)
             {
                 No removido = no;
-
+                atualizarFatorBalanceamento(no, REMOCAO);
                 if (no.getPai() == null)
                 {
                     this.setRaiz(no.getDireito());
@@ -200,7 +305,7 @@ public class Arvore {
                     this.setRaiz(null);
                     return no;
                 }
-
+                atualizarFatorBalanceamento(no, REMOCAO);
                 no.setPai(null);
                 if (no.getChave() > pai.getChave())
                 {
@@ -316,7 +421,7 @@ public class Arvore {
                 {
                     if (filho.getProfundidade() == i && index + 1 == j)
                     {
-                        System.out.printf("%03d", filho.getChave());
+                        System.out.printf("%03d[%d]", filho.getChave(), filho.getFatorBalanceamento());
                         ok = true;
                         break;
                     }
@@ -325,7 +430,7 @@ public class Arvore {
 
                 if (ok) continue;
 
-                System.out.print("---");
+                System.out.print("------");
             }
             System.out.println();
         }

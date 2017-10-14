@@ -17,92 +17,107 @@ public class Main {
         
         Arvore arvore = new Arvore();
 
-            arvore.inserir(20);
+        arvore.inserir(20);
 
-            arvore.inserir(10);
-            arvore.inserir(15);
-            arvore.inserir(5);
-            arvore.inserir(4);
-            arvore.inserir(6);
-            arvore.inserir(14);
-            arvore.inserir(16);
+        arvore.inserir(10);
+        arvore.inserir(15);
+        arvore.inserir(5);
+        arvore.inserir(4);
+        arvore.inserir(6);
+        arvore.inserir(14);
+        arvore.inserir(16);
 
-            arvore.inserir(30);
-            arvore.inserir(45);
-            arvore.inserir(25);
-            arvore.inserir(24);
-            arvore.inserir(26);
-            arvore.inserir(44);
-            arvore.inserir(46);
+        arvore.inserir(30);
+        arvore.inserir(45);
+        arvore.inserir(25);
+        arvore.inserir(24);
+        arvore.inserir(26);
+        arvore.inserir(44);
+        arvore.inserir(46);
+        
+        arvore = new Arvore();
+        
+        arvore.inserir(50);
+        arvore.inserir(75);
+        arvore.inserir(90);
+        arvore.inserir(80);
 
-            int comando = -1, chave;
-            String valor;
+        int comando = -1, chave;
+        String valor;
 
-            do
-            { 
-                System.out.println("\nÁrvore Binária de Pesquisa:\n");
-                arvore.mostrar();
-                
-                System.out.println("1 - Inserir <chave> <valor>;");
-                System.out.println("2 - Remover <chave>;");
-                System.out.println("3 - Em Ordem;");
-                System.out.println("4 - Pós Ordem;");
-                System.out.println("5 - Limpar Árvore;");
-                System.out.println("6 - Obter <chave>;");
-                System.out.println("0 - Sair:");
-                System.out.print("\nDigite algum comando: ");
+        do
+        { 
+            System.out.println("\nAVL:\n");
+            arvore.mostrar();
 
-                String texto = scanner.nextLine();
-                System.out.println();
+            System.out.println("1 - Inserir <chave> <valor>;");
+            System.out.println("2 - Remover <chave>;");
+            System.out.println("3 - Em Ordem;");
+            System.out.println("4 - Pós Ordem;");
+            System.out.println("5 - Limpar Árvore;");
+            System.out.println("6 - Obter <chave>;");
+            System.out.println("7 - Rotação Esquerda <chave>;");
+            System.out.println("8 - Rotação Direita <chave>;");
+            System.out.println("0 - Sair:");
+            System.out.print("\nDigite algum comando: ");
 
-                String[] parametros = texto.trim().split(" ");
+            String texto = scanner.nextLine();
+            System.out.println();
 
-                comando = Integer.parseInt(parametros[0]);
-                chave = parametros.length > 1 ? Integer.parseInt(parametros[1]) : 0;
-                valor = parametros.length > 2 ? parametros[2] : null;
+            String[] parametros = texto.trim().split(" ");
 
-                No no;
-                switch (comando)
-                {
-                    case 1:
-                        arvore.inserir(chave, valor);
-                        break;
-                    case 2:
-                        no = arvore.remover(chave);
-                        if (no == null)
-                        {
-                            System.out.printf("Nó #%d não encontrado!", chave);
-                        }
-                        else
-                        {
-                           System.out.printf("Nó #%d removido com sucesso!\n", chave);
-                        }
-                        break;
-                    case 3:
-                        arvore.emOrdem();
-                        break;
-                    case 4:
-                        arvore.posOrdem();
-                        break;
-                    case 5:
-                        arvore = new Arvore();
-                        break;
-                    case 6:
-                        no = arvore.obter(chave);
-                        if (no == null || no.getChave() != chave)
-                        {
-                            System.out.println("Item não encontrado!");
-                        }
-                        else
-                        {
-                            System.out.printf("Nó #%03d | Valor = %d", no.getChave(), no.getValor());
-                        }
-                        break;
-                    default:
-                        System.out.println("Comando inválido!");
-                        break;
-                }
+            comando = Integer.parseInt(parametros[0]);
+            chave = parametros.length > 1 ? Integer.parseInt(parametros[1]) : 0;
+            valor = parametros.length > 2 ? parametros[2] : null;
 
-            } while (comando != 0);
+            No no;
+            switch (comando)
+            {
+                case 1:
+                    arvore.inserir(chave, valor);
+                    break;
+                case 2:
+                    no = arvore.remover(chave);
+                    if (no == null)
+                    {
+                        System.out.printf("Nó #%d não encontrado!", chave);
+                    }
+                    else
+                    {
+                       System.out.printf("Nó #%d removido com sucesso!\n", chave);
+                    }
+                    break;
+                case 3:
+                    arvore.emOrdem();
+                    break;
+                case 4:
+                    arvore.posOrdem();
+                    break;
+                case 5:
+                    arvore = new Arvore();
+                    break;
+                case 6:
+                    no = arvore.obter(chave);
+                    if (no == null || no.getChave() != chave)
+                    {
+                        System.out.println("Item não encontrado!");
+                    }
+                    else
+                    {
+                        System.out.printf("Nó #%03d | Valor = %d", no.getChave(), no.getValor());
+                    }
+                    break;
+                case 7:
+                    arvore.rotacaoEsquerdaSimples(chave);
+                    break;
+                case 8:
+                    arvore.rotacaoDireitaSimples(chave);
+                    break;
+                default:
+                    System.out.println("Comando inválido!");
+                    break;
+            }
+
+        } while (comando != 0);
     }
 }

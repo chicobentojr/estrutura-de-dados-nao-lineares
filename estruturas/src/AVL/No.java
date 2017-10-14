@@ -16,6 +16,15 @@ public class No {
     private No direito;
     private int chave;
     private Object valor;
+    private int fatorBalanceamento;
+
+    public int getFatorBalanceamento() {
+        return fatorBalanceamento;
+    }
+
+    public void setFatorBalanceamento(int fatorBalanceamento) {
+        this.fatorBalanceamento = fatorBalanceamento;
+    }
 
     public No getPai() {
         return pai;
