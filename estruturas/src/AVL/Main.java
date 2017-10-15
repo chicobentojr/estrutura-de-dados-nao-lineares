@@ -16,50 +16,13 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         
         Arvore arvore = new Arvore();
-
-        arvore.inserir(20);
-
-        arvore.inserir(10);
-        arvore.inserir(15);
-        arvore.inserir(5);
-        arvore.inserir(4);
-        arvore.inserir(6);
-        arvore.inserir(14);
-        arvore.inserir(16);
-
-        arvore.inserir(30);
-        arvore.inserir(45);
-        arvore.inserir(25);
-        arvore.inserir(24);
-        arvore.inserir(26);
-        arvore.inserir(44);
-        arvore.inserir(46);
         
-        arvore = new Arvore();
+        int[] inicio = { 40, 30, 60, 10, 35, 70, 5, 12, 3};
         
-        arvore.inserir(50);
-        arvore.inserir(75);
-        arvore.inserir(90);
-        arvore.inserir(80);
+        for (int i = 0; i < inicio.length; i++) {
+            arvore.inserir(inicio[i]);
+        }
         
-        arvore = new Arvore();
-        
-        arvore.inserir(50);
-        arvore.inserir(70);
-        arvore.inserir(20);
-        arvore.inserir(10);
-        arvore.inserir(30);
-        
-        arvore = new Arvore();
-        
-        arvore.inserir(40);
-        arvore.inserir(30);
-        arvore.inserir(60);
-        arvore.inserir(70);
-        arvore.inserir(35);
-        arvore.inserir(10);
-        arvore.inserir(12);
-        arvore.inserir(5);
 
         int comando = -1, chave;
         String valor;

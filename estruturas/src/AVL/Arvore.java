@@ -93,7 +93,6 @@ public class Arvore {
                 }
             } 
         } else if (operacao == Arvore.REMOCAO) {
-            
             if (no.getChave() > pai.getChave()) {
                 pai.setFatorBalanceamento(pai.getFatorBalanceamento() + 1);
             }
@@ -103,6 +102,58 @@ public class Arvore {
             
             if (pai.getFatorBalanceamento() == 0) {
                 atualizarFatorBalanceamento(pai, operacao);
+            } else {
+                if (pai.getFatorBalanceamento() == -2) {
+                    No b = pai.getDireito();
+                    int fatorB = b.getFatorBalanceamento();
+                    int fatorC = fatorB > 0 ? b.getEsquerdo().getFatorBalanceamento() : 0;
+                    
+                    balancearArvore(pai);
+                    
+                    if (fatorB < 0) {
+                        pai.setFatorBalanceamento(0);
+                        b.setFatorBalanceamento(0);
+                        atualizarFatorBalanceamento(b, REMOCAO);
+                    } else if (fatorB == 0){
+                        pai.setFatorBalanceamento(-1);
+                        b.setFatorBalanceamento(1);
+                    } else {
+                        if (fatorC == -1)
+                            pai.setFatorBalanceamento(1);
+                        else
+                            pai.setFatorBalanceamento(0);
+                        
+                        if (fatorC == 1)
+                            b.setFatorBalanceamento(-1);
+                        else
+                            b.setFatorBalanceamento(0);
+                    }
+                } else if (pai.getFatorBalanceamento() == 2) {
+                    No b = pai.getEsquerdo();
+                    int fatorB = b.getFatorBalanceamento();
+                    int fatorC = fatorB > 0 ? b.getDireito().getFatorBalanceamento() : 0;
+                    
+                    balancearArvore(pai);
+                    
+                    if (fatorB > 0) {
+                        pai.setFatorBalanceamento(0);
+                        b.setFatorBalanceamento(0);
+                        atualizarFatorBalanceamento(b, REMOCAO);
+                    } else if (fatorB == 0){
+                        pai.setFatorBalanceamento(+1);
+                        b.setFatorBalanceamento(-1);
+                    } else {
+                        if (fatorC == 1)
+                            pai.setFatorBalanceamento(-1);
+                        else
+                            pai.setFatorBalanceamento(0);
+                        
+                        if (fatorC == -1)
+                            b.setFatorBalanceamento(1);
+                        else
+                            b.setFatorBalanceamento(0);
+                    }
+                }
             }
         }
     }
@@ -186,9 +237,28 @@ public class Arvore {
     }
     
     private No rotacaoEsquerdaDupla(No no)
-    {
-        this.rotacaoDireitaSimples(no.getDireito());
-        return this.rotacaoEsquerdaSimples(no);
+    {   
+        No b = no.getDireito();
+        No c = b.getEsquerdo();
+        
+        int fatorC = c.getFatorBalanceamento();
+        
+        this.rotacaoDireitaSimples(b);
+        this.rotacaoEsquerdaSimples(no);
+        
+        if (fatorC == -1)
+            no.setFatorBalanceamento(1);
+        else
+            no.setFatorBalanceamento(0);
+       
+        if (fatorC == 1)
+            b.setFatorBalanceamento(-1);
+        else
+            b.setFatorBalanceamento(0);
+        
+        c.setFatorBalanceamento(0);
+        
+        return no;
     }
     
     public void rotacaoDireitaDupla(int chave)
@@ -199,23 +269,28 @@ public class Arvore {
     
     private No rotacaoDireitaDupla(No no)
     {
-        No esquerdo = no.getEsquerdo();
-        this.rotacaoEsquerdaSimples(esquerdo);
+        No b = no.getEsquerdo();
+        No c = b.getDireito();
+        
+        int fatorC = c.getFatorBalanceamento();
+        
+        this.rotacaoEsquerdaSimples(b);
         this.rotacaoDireitaSimples(no);
         
-        No segundoEsquerdo = esquerdo.getEsquerdo();
-        if (segundoEsquerdo != null) {
-            no.setFatorBalanceamento(no.getFatorBalanceamento() - 1);
-            //esquerdo.setFatorBalanceamento(esquerdo.getFatorBalanceamento() + 1);
-            
-            No novoDireito = esquerdo.getDireito();
-            if (novoDireito != null) {
-                novoDireito = novoDireito.getDireito();
-                if (novoDireito != null) {
-                    novoDireito.setFatorBalanceamento(-1);
-                }
-            }
-        }
+        if (fatorC == 1)
+            no.setFatorBalanceamento(-1);
+        else
+            no.setFatorBalanceamento(0);
+       
+        if (fatorC == -1)
+            b.setFatorBalanceamento(1);
+        else
+            b.setFatorBalanceamento(0);
+        
+        c.setFatorBalanceamento(0);
+        
+        System.out.printf("%d %d %d %d", no.getChave(), b.getChave(), c.getChave(), fatorC);
+        
         return no;
     }
     
@@ -227,7 +302,6 @@ public class Arvore {
             case 2:
                 if (no.getEsquerdo() != null && no.getEsquerdo().getFatorBalanceamento() < 0) {
                     this.rotacaoDireitaDupla(no);
-                    
                 } else {
                     this.rotacaoDireitaSimples(no);
                 }
@@ -235,7 +309,6 @@ public class Arvore {
             case -2:
                 if (no.getDireito()!= null && no.getDireito().getFatorBalanceamento() > 0) {
                     this.rotacaoEsquerdaDupla(no);
-                    
                 } else {
                     this.rotacaoEsquerdaSimples(no);
                 }
