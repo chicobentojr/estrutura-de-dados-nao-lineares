@@ -17,7 +17,8 @@ public class Main {
         
         Arvore arvore = new Arvore();
         
-        int[] inicio = { 40, 30, 60, 10, 35, 70, 5, 12, 3};
+//        int[] inicio = { 40, 30, 60, 10, 35, 70, 5, 12, 3};
+        int[] inicio = { 8, 6, 20, 2, 7, 11, 29, 3, 10, 12, 24, 32, 9, 22, 31 };
         
         for (int i = 0; i < inicio.length; i++) {
             arvore.inserir(inicio[i]);

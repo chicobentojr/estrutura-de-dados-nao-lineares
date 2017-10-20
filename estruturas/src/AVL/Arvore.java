@@ -100,14 +100,11 @@ public class Arvore {
                 pai.setFatorBalanceamento(pai.getFatorBalanceamento() - 1);
             }
             
-            if (pai.getFatorBalanceamento() == 0) {
+            if ((pai.getFatorBalanceamento() == -2) || pai.getFatorBalanceamento() == 2 ) {
+                balancearArvore(pai);
+                atualizarFatorBalanceamento(pai.getPai(), operacao);
+            } else if (pai.getFatorBalanceamento() == 0) {
                 atualizarFatorBalanceamento(pai, operacao);
-            } else {
-                if (pai.getFatorBalanceamento() == -2) {
-                    balancearArvore(pai);
-                } else if (pai.getFatorBalanceamento() == 2) {
-                    balancearArvore(pai);
-                }
             }
         }
     }
