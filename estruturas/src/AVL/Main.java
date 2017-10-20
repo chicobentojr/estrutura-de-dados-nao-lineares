@@ -39,8 +39,8 @@ public class Main {
             System.out.println("5 - Limpar Árvore;");
             System.out.println("6 - Obter <chave>;");
             System.out.println("7 - Rotação Simples Esquerda <chave>;");
-            System.out.println("8 - Rotação Dupla Esquerda <chave>;");
-            System.out.println("9 - Rotação Simples Direita <chave>;");
+            System.out.println("8 - Rotação Simples Direita <chave>;");
+            System.out.println("9 - Rotação Dupla Esquerda <chave>;");
             System.out.println("10 - Rotação Dupla Direita <chave>;");
             System.out.println("0 - Sair:");
             System.out.print("\nDigite algum comando: ");
@@ -95,10 +95,10 @@ public class Main {
                     arvore.rotacaoEsquerdaSimples(chave);
                     break;
                 case 8:
-                    arvore.rotacaoEsquerdaDupla(chave);
+                    arvore.rotacaoDireitaSimples(chave);
                     break;
                 case 9:
-                    arvore.rotacaoDireitaSimples(chave);
+                    arvore.rotacaoEsquerdaDupla(chave);
                     break;
                 case 10:
                     arvore.rotacaoDireitaDupla(chave);

@@ -104,55 +104,9 @@ public class Arvore {
                 atualizarFatorBalanceamento(pai, operacao);
             } else {
                 if (pai.getFatorBalanceamento() == -2) {
-                    No b = pai.getDireito();
-                    int fatorB = b.getFatorBalanceamento();
-                    int fatorC = fatorB > 0 ? b.getEsquerdo().getFatorBalanceamento() : 0;
-                    
                     balancearArvore(pai);
-                    
-                    if (fatorB < 0) {
-                        pai.setFatorBalanceamento(0);
-                        b.setFatorBalanceamento(0);
-                        atualizarFatorBalanceamento(b, REMOCAO);
-                    } else if (fatorB == 0){
-                        pai.setFatorBalanceamento(-1);
-                        b.setFatorBalanceamento(1);
-                    } else {
-                        if (fatorC == -1)
-                            pai.setFatorBalanceamento(1);
-                        else
-                            pai.setFatorBalanceamento(0);
-                        
-                        if (fatorC == 1)
-                            b.setFatorBalanceamento(-1);
-                        else
-                            b.setFatorBalanceamento(0);
-                    }
                 } else if (pai.getFatorBalanceamento() == 2) {
-                    No b = pai.getEsquerdo();
-                    int fatorB = b.getFatorBalanceamento();
-                    int fatorC = fatorB > 0 ? b.getDireito().getFatorBalanceamento() : 0;
-                    
                     balancearArvore(pai);
-                    
-                    if (fatorB > 0) {
-                        pai.setFatorBalanceamento(0);
-                        b.setFatorBalanceamento(0);
-                        atualizarFatorBalanceamento(b, REMOCAO);
-                    } else if (fatorB == 0){
-                        pai.setFatorBalanceamento(+1);
-                        b.setFatorBalanceamento(-1);
-                    } else {
-                        if (fatorC == 1)
-                            pai.setFatorBalanceamento(-1);
-                        else
-                            pai.setFatorBalanceamento(0);
-                        
-                        if (fatorC == -1)
-                            b.setFatorBalanceamento(1);
-                        else
-                            b.setFatorBalanceamento(0);
-                    }
                 }
             }
         }
@@ -178,18 +132,19 @@ public class Arvore {
         } else {
             this.setRaiz(direito);
         }
-        direito.setFatorBalanceamento(0);
         direito.setPai(pai);
         direito.setEsquerdo(no);
         
-        no.setFatorBalanceamento(0);
         no.setPai(direito);
         no.setDireito(novoDireito);
 
         if (novoDireito != null) {
-            novoDireito.setFatorBalanceamento(0);
             novoDireito.setPai(no);
         }
+        
+        no.setFatorBalanceamento(no.getFatorBalanceamento() + 1 - Math.min(direito.getFatorBalanceamento(), 0));
+        direito.setFatorBalanceamento(direito.getFatorBalanceamento() + 1 + Math.max(no.getFatorBalanceamento(), 0));
+
         
         return no;
         
@@ -215,18 +170,19 @@ public class Arvore {
         } else {
             this.setRaiz(esquerdo);
         }
-        esquerdo.setFatorBalanceamento(0);
         esquerdo.setPai(pai);
         esquerdo.setDireito(no);
         
-        no.setFatorBalanceamento(0);
         no.setPai(esquerdo);
         no.setEsquerdo(novoEsquerdo);
 
         if (novoEsquerdo != null) {
-            novoEsquerdo.setFatorBalanceamento(0);
             novoEsquerdo.setPai(no);
         }
+        
+        no.setFatorBalanceamento(no.getFatorBalanceamento() - 1 - Math.max(esquerdo.getFatorBalanceamento(), 0));
+        esquerdo.setFatorBalanceamento(esquerdo.getFatorBalanceamento() - 1 - Math.min(no.getFatorBalanceamento(), 0));
+
         return no;
     }
     
@@ -245,18 +201,6 @@ public class Arvore {
         
         this.rotacaoDireitaSimples(b);
         this.rotacaoEsquerdaSimples(no);
-        
-        if (fatorC == -1)
-            no.setFatorBalanceamento(1);
-        else
-            no.setFatorBalanceamento(0);
-       
-        if (fatorC == 1)
-            b.setFatorBalanceamento(-1);
-        else
-            b.setFatorBalanceamento(0);
-        
-        c.setFatorBalanceamento(0);
         
         return no;
     }
@@ -277,20 +221,6 @@ public class Arvore {
         this.rotacaoEsquerdaSimples(b);
         this.rotacaoDireitaSimples(no);
         
-        if (fatorC == 1)
-            no.setFatorBalanceamento(-1);
-        else
-            no.setFatorBalanceamento(0);
-       
-        if (fatorC == -1)
-            b.setFatorBalanceamento(1);
-        else
-            b.setFatorBalanceamento(0);
-        
-        c.setFatorBalanceamento(0);
-        
-        System.out.printf("%d %d %d %d", no.getChave(), b.getChave(), c.getChave(), fatorC);
-        
         return no;
     }
     
@@ -298,7 +228,8 @@ public class Arvore {
     {
         int fator = no.getFatorBalanceamento();
         
-        switch (fator) {
+        switch (0) {
+//        switch (fator) {
             case 2:
                 if (no.getEsquerdo() != null && no.getEsquerdo().getFatorBalanceamento() < 0) {
                     this.rotacaoDireitaDupla(no);
