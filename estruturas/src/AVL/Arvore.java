@@ -145,7 +145,6 @@ public class Arvore {
         no.setFatorBalanceamento(no.getFatorBalanceamento() + 1 - Math.min(direito.getFatorBalanceamento(), 0));
         direito.setFatorBalanceamento(direito.getFatorBalanceamento() + 1 + Math.max(no.getFatorBalanceamento(), 0));
 
-        
         return no;
         
     }
@@ -181,7 +180,7 @@ public class Arvore {
         }
         
         no.setFatorBalanceamento(no.getFatorBalanceamento() - 1 - Math.max(esquerdo.getFatorBalanceamento(), 0));
-        esquerdo.setFatorBalanceamento(esquerdo.getFatorBalanceamento() - 1 - Math.min(no.getFatorBalanceamento(), 0));
+        esquerdo.setFatorBalanceamento(esquerdo.getFatorBalanceamento() - 1 + Math.min(no.getFatorBalanceamento(), 0));
 
         return no;
     }
@@ -195,9 +194,6 @@ public class Arvore {
     private No rotacaoEsquerdaDupla(No no)
     {   
         No b = no.getDireito();
-        No c = b.getEsquerdo();
-        
-        int fatorC = c.getFatorBalanceamento();
         
         this.rotacaoDireitaSimples(b);
         this.rotacaoEsquerdaSimples(no);
@@ -214,9 +210,6 @@ public class Arvore {
     private No rotacaoDireitaDupla(No no)
     {
         No b = no.getEsquerdo();
-        No c = b.getDireito();
-        
-        int fatorC = c.getFatorBalanceamento();
         
         this.rotacaoEsquerdaSimples(b);
         this.rotacaoDireitaSimples(no);
@@ -228,8 +221,7 @@ public class Arvore {
     {
         int fator = no.getFatorBalanceamento();
         
-        switch (0) {
-//        switch (fator) {
+        switch (fator) {
             case 2:
                 if (no.getEsquerdo() != null && no.getEsquerdo().getFatorBalanceamento() < 0) {
                     this.rotacaoDireitaDupla(no);
