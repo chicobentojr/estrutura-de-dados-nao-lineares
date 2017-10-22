@@ -30,8 +30,9 @@ public class Main {
 
         do
         { 
-            System.out.println("\nAVL:\n");
-            arvore.mostrar();
+            
+            
+            System.out.println(arvore);
 
             System.out.println("1 - Inserir <chave> <valor>;");
             System.out.println("2 - Remover <chave>;");
@@ -43,6 +44,7 @@ public class Main {
             System.out.println("8 - Rotação Simples Direita <chave>;");
             System.out.println("9 - Rotação Dupla Esquerda <chave>;");
             System.out.println("10 - Rotação Dupla Direita <chave>;");
+            System.out.println("11 - Alterar modo do balanceamento;");
             System.out.println("0 - Sair:");
             System.out.print("\nDigite algum comando: ");
 
@@ -103,6 +105,9 @@ public class Main {
                     break;
                 case 10:
                     arvore.rotacaoDireitaDupla(chave);
+                    break;
+                case 11:
+                    arvore.setAtualizarAutomaticamente(!arvore.isAtualizarAutomaticamente());
                     break;
                 default:
                     System.out.println("Comando inválido!");

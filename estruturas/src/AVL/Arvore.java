@@ -20,6 +20,15 @@ public class Arvore {
     
     private No raiz;
     private int tamanho;
+    private boolean atualizarAutomaticamente;
+
+    public boolean isAtualizarAutomaticamente() {
+        return atualizarAutomaticamente;
+    }
+
+    public void setAtualizarAutomaticamente(boolean atualizarAutomaticamente) {
+        this.atualizarAutomaticamente = atualizarAutomaticamente;
+    }
     
     public No getRaiz()
     {
@@ -34,6 +43,7 @@ public class Arvore {
     public Arvore()
     {
         this.tamanho = 0;
+        this.atualizarAutomaticamente = true;
     }
 
     public boolean EVazia()
@@ -216,6 +226,8 @@ public class Arvore {
     
     private void balancearArvore(No no)
     {
+        if (!this.atualizarAutomaticamente) return;
+        
         int fator = no.getFatorBalanceamento();
         
         switch (fator) {
@@ -469,37 +481,44 @@ public class Arvore {
         return this.getRaiz() != null ? this.getRaiz().getProfundidade() : 0;
     }
 
-    public void mostrar()
+    @Override
+    public String toString()
     {
-        if (this.getRaiz() == null)
-        {
-            System.out.println("A árvore está vazia!");
+        String retorno = new String("\nAVL: ");
+        retorno += this.isAtualizarAutomaticamente() ? "Automática" : "Manual";
+        retorno += "\n\n";
+        
+        if (this.getRaiz() == null) {
+            retorno += "A árvore está vazia!\n";
         }
-
-        for (int i = 0; i <= this.getAltura(); i++)
-        {
-            for (int j = 0; j <= this.getFilhos().size() + 1; j++)
+        else {
+            for (int i = 0; i <= this.getAltura(); i++)
             {
-                boolean ok = false;
-                int index = 0;
-
-                for (No filho : this.getFilhos())
+                for (int j = 0; j <= this.getFilhos().size() + 1; j++)
                 {
-                    if (filho.getProfundidade() == i && index + 1 == j)
+                    boolean ok = false;
+                    int index = 0;
+
+                    for (No filho : this.getFilhos())
                     {
-                        System.out.printf("%03d[%d]", filho.getChave(), filho.getFatorBalanceamento());
-                        ok = true;
-                        break;
+                        if (filho.getProfundidade() == i && index + 1 == j)
+                        {
+                            retorno += String.format("%03d[%d]", filho.getChave(), filho.getFatorBalanceamento());
+                            ok = true;
+                            break;
+                        }
+                        index++;
                     }
-                    index++;
+
+                    if (ok) continue;
+
+                    retorno += "------";
                 }
-
-                if (ok) continue;
-
-                System.out.print("------");
+                retorno += "\n";
             }
-            System.out.println();
         }
-        System.out.println();
+        retorno += "\n";
+        
+        return retorno;
     }
 }
