@@ -98,7 +98,7 @@ public class Grafo {
             }
         }
         return retorno;
-    } 
+    }
     
     public ArrayList<Vertice> vertices() {
         return this.vertices;
@@ -114,7 +114,7 @@ public class Grafo {
             return "Grafo vazio";
         }
         String retorno = "\nGRAFO:\n\n";
-        retorno += "|    |";
+        retorno += "|   |";
         for (Vertice v : vertices) {
             retorno += " " + v.getValor() + " |";
         }
@@ -125,7 +125,7 @@ public class Grafo {
         for (Vertice v : vertices) {
             retorno += "| " + v.getValor() + " |";
             for (Vertice w : vertices) {
-                retorno += " " + (this.eAdjacente(v,w) ? 1 : 0) + "  |";
+                retorno += " " + (this.eAdjacente(v,w) ? 1 : 0) + " |";
             }
             retorno += "\n";
         }

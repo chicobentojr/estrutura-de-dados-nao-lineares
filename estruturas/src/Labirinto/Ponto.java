@@ -3,17 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Grafo;
+package Labirinto;
 
 /**
  *
  * @author chicobentojr
  */
-public class Vertice {
+public class Ponto {
+    
+    private Object chave;
     private Object valor;
     
-    public Vertice(Object valor) {
+    public Ponto(Object chave, Object valor) {
+        this.chave = chave;
         this.valor = valor;
+    }
+
+    public Object getChave() {
+        return chave;
+    }
+
+    public void setChave(Object chave) {
+        this.chave = chave;
     }
 
     public Object getValor() {
@@ -22,5 +33,10 @@ public class Vertice {
 
     public void setValor(Object valor) {
         this.valor = valor;
+    }
+
+    @Override
+    public String toString() {
+        return this.chave.toString();
     }
 }
