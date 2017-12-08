@@ -24,7 +24,7 @@ public class Main {
 
     public static void main(String[] args) throws InvalidMaze {
         
-        String dat = LeitorDeArquivo.lerArquivo("/home/chicobentojr/Workspace/tads/estrutura-de-dados-nao-lineares/estruturas/src/Labirinto/labirinto.dat");
+        String dat = LeitorDeArquivo.lerArquivo("/home/felipe/Workspaces/IFRN/ednl/estruturas/src/Labirinto/labirinto.dat");
         String labirintoRaw[][] = getLabirinto(dat);
         Vertice labirintoVertice[][] = new Vertice[labirintoRaw.length][labirintoRaw[0].length];
         Grafo labirinto = new Grafo();
@@ -68,12 +68,16 @@ public class Main {
             distancias[index(v)] = distancia(labirinto, inicio, v);
         }
         
-        Vertice w = null;
+        Vertice w = inicio;
+        
+        System.out.println("Tamanho percorridos: "+ percorridos.size());
+        System.out.println("Tamanho vertices: " + vertices.size());
 
-        while(percorridos.size() != vertices.size() + 1) {
+        while(percorridos.size() != labirinto.vertices().size()) {
             if (w != null) System.out.println("Ultimo w: " + ((Ponto)w.getValor()).getChave());
             
             w = maisProximo(naoPercorridos, distancias);
+            
             if (w != null) System.out.println("Novo w: " + ((Ponto)w.getValor()).getChave());
             
 //            if (antecessor[index(w)] != null && !percorridos.contains(antecessor[index(w)])) {
@@ -84,6 +88,11 @@ public class Main {
             percorridos.add(w);
             naoPercorridos.remove(w);
             
+            if (((Ponto)w.getValor()).getValor().equals("3")) {
+                System.out.println("Parou no: " + w.getValor());
+                break;
+            }
+            
             for (Vertice v : naoPercorridos) {
                 if (distancias[index(w)] + distancia(labirinto, w, v) < distancias[index(v)]) {
                     antecessor[index(v)] = w;
@@ -92,12 +101,24 @@ public class Main {
             }            
         }
         
+        System.out.println("Tamanho percorridos: "+ percorridos.size());
+        System.out.println("Tamanho vertices: " + vertices.size());
+        System.out.println("");
+        
         System.out.println("Labirinto:");
         for (int i = 0; i < labirintoVertice.length; i++) {
             for (int j = 0; j < labirintoVertice[i].length; j++) {
                 Vertice v = labirintoVertice[i][j];
-                String str = " ";
-                if (v != null) str = v.getValor().toString();
+                String str = "░░░░";
+                if (v != null) {
+                    String borda = " ";
+                    if (((Ponto)v.getValor()).getValor().equals("3")) {
+                        borda = "↗";
+                    } else if (((Ponto)v.getValor()).getValor().equals("2")) {
+                        borda = "↙";
+                    }
+                    str = borda + String.format("%02d", ((Ponto)v.getValor()).getChave()) + borda;
+                }
                 System.out.print(str);
             }
             System.out.println("");
@@ -105,16 +126,46 @@ public class Main {
         
         System.out.println("");
         
-//        if (w != null) {
-//            System.out.println("Conseguiu.");
+        System.out.println("Antecessores: ");
+        for (Vertice v : percorridos) {
+            if (antecessor[index(v)] == null) continue;
+            System.out.print(antecessor[index(v)].getValor());
+            System.out.print(" -> ");
+            System.out.print(v.getValor());
+            System.out.println("");
+        }
+        
+        System.out.println("Percorridos: ");
+        for (Vertice v : percorridos) {
+            System.out.print(v.getValor());
+            System.out.print(" ");
+        }
+        
+        System.out.println("");
+        
+        if (w != null && ((Ponto)w.getValor()).getValor().equals("3")) {
+            System.out.println("Conseguiu.");
             System.out.print("Caminho: ");
-            for (Vertice v : percorridos) {
-                System.out.print(index(v) + ", ");
-                if (((Ponto)v.getValor()).getValor().equals("3")) break;
+            String caminho = "";
+            int i = percorridos.size() - 1;
+            Vertice v = percorridos.get(i);
+            Vertice vAntecessor = antecessor[index(v)];
+            caminho = index(v) + caminho;
+            
+            while (vAntecessor != null || i > 0) {
+                if (vAntecessor == null && i > 0) {
+                    vAntecessor = percorridos.get(0);
+                }
+                i = percorridos.indexOf(vAntecessor);
+                v = vAntecessor;
+                vAntecessor = antecessor[index(v)];
+                caminho = index(v) + "-> " + caminho;
             }
-//        } else {
-//            System.out.println("Não conseguiu.");
-//        }
+            
+            System.out.println(caminho);
+        } else {
+            System.out.println("Não conseguiu.");
+        }
         
     }
     
