@@ -6,6 +6,7 @@
 package Grafo;
 
 import Grafo.Grafo.VerticeNaoEncontrado;
+import Labirinto.Ponto;
 import java.util.ArrayList;
 
 /**
@@ -101,11 +102,11 @@ public class Grafo {
     }
     
     public ArrayList<Vertice> vertices() {
-        return this.vertices;
+        return (ArrayList<Vertice>)this.vertices.clone();
     }
     
     public ArrayList<Aresta> arestas() {
-        return this.arestas;
+        return (ArrayList<Aresta>)this.arestas.clone();
     }
     
     @Override
@@ -114,18 +115,16 @@ public class Grafo {
             return "Grafo vazio";
         }
         String retorno = "\nGRAFO:\n\n";
-        retorno += "|   |";
+        retorno += "|    |";
         for (Vertice v : vertices) {
-            retorno += " " + v.getValor() + " |";
+            retorno += " " + String.format("%02d", Integer.parseInt(v.getValor().toString())) + " |";
         }
         retorno += "\n";
         
-        
-        
         for (Vertice v : vertices) {
-            retorno += "| " + v.getValor() + " |";
+            retorno += "| " + String.format("%02d", Integer.parseInt(v.getValor().toString())) + " |";
             for (Vertice w : vertices) {
-                retorno += " " + (this.eAdjacente(v,w) ? 1 : 0) + " |";
+                retorno += " " + (this.eAdjacente(v,w) ? "★★" : "  ") + " |";
             }
             retorno += "\n";
         }
