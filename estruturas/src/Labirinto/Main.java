@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws InvalidMaze {
         
-        String dat = LeitorDeArquivo.lerArquivo("/home/felipe/Workspaces/IFRN/ednl/estruturas/src/Labirinto/labirinto.dat");
+        String dat = LeitorDeArquivo.lerArquivo("/home/chicobentojr/Workspace/tads/estrutura-de-dados-nao-lineares/estruturas/src/Labirinto/labirinto.dat");
         String labirintoRaw[][] = getLabirinto(dat);
         Vertice labirintoVertice[][] = new Vertice[labirintoRaw.length][labirintoRaw[0].length];
         Grafo labirinto = new Grafo();
@@ -147,7 +147,7 @@ public class Main {
         
         System.out.println("");
         
-        if (w != null && ((Ponto)w.getValor()).getValor().equals("3")) {
+        if (w != null && ((Ponto)w.getValor()).getValor().equals("3") && distancias[index(w)] < INFINITY) {
             System.out.println("Conseguiu.");
             System.out.print("Caminho: ");
             String caminho = "";
