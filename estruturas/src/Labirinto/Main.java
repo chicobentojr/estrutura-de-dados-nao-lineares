@@ -9,6 +9,8 @@ import java.util.List;
 
 public class Main {
     
+    private static final int INFINITY = 9999;
+    
     private static String[][] getLabirinto(String data) throws InvalidMaze {
         String rows[] = data.split("\n");
         if (rows.length < 1) throw new InvalidMaze();
@@ -78,13 +80,15 @@ public class Main {
             
             w = maisProximo(naoPercorridos, distancias);
             
-            if (w != null) System.out.println("Novo w: " + ((Ponto)w.getValor()).getChave());
+            if (w != null) System.out.println("Novo w: " + ((Ponto)w.getValor()).getChave() + " (" +distancias[index(w)]+ ")");
             
 //            if (antecessor[index(w)] != null && !percorridos.contains(antecessor[index(w)])) {
 //                percorridos.add(antecessor[index(w)]);
 //                naoPercorridos.remove(antecessor[index(w)]);
 //            }
             
+            if (distancias[index(w)] >= INFINITY) break;
+
             percorridos.add(w);
             naoPercorridos.remove(w);
             
@@ -152,15 +156,14 @@ public class Main {
             Vertice vAntecessor = antecessor[index(v)];
             caminho = index(v) + caminho;
             
-            while (vAntecessor != null || i > 0) {
-                if (vAntecessor == null && i > 0) {
-                    vAntecessor = percorridos.get(0);
-                }
+            while (vAntecessor != null) {
                 i = percorridos.indexOf(vAntecessor);
                 v = vAntecessor;
                 vAntecessor = antecessor[index(v)];
                 caminho = index(v) + "-> " + caminho;
             }
+            
+            caminho = index(percorridos.get(0)) + "-> " + caminho;
             
             System.out.println(caminho);
         } else {
@@ -195,6 +198,6 @@ public class Main {
             return 0;
         }
         
-        return 9999;
+        return INFINITY;
     }
 }
