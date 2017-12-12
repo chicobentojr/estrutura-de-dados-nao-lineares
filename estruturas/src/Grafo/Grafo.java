@@ -50,6 +50,10 @@ public class Grafo {
         return false;
     }
     
+    public int grau(Vertice v) {
+        return arestasIncidentes(v).size();
+    }
+    
     public Object substituir(Vertice v, Object x) {
         v.setValor(x);
         return x;
