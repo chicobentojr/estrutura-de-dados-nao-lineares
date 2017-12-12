@@ -7,6 +7,8 @@ package Telecomunicacao;
 
 import Grafo.Grafo;
 import Grafo.Vertice;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -16,6 +18,11 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        /*
+         * Coleta
+         */
+        
+        
         Scanner s = new Scanner(System.in);
         Grafo grafo = new Grafo();
 
@@ -39,6 +46,20 @@ public class Main {
 
         System.out.println(grafo);
         
+        /* 
+         * Resolução
+         */
         
+        List<Vertice> vertices = grafo.vertices();
+        vertices.sort((Vertice vi, Vertice vj) -> grafo.grau(vi) - grafo.grau(vj));
+        
+        int i = 1;
+        while(!vertices.isEmpty()) {
+            Vertice v = vertices.remove(0);
+            vertices.removeIf((Vertice vk) -> !grafo.eAdjacente(v, vk));
+            i++;
+        }
+        
+        System.out.println("São necessário: " + (i-1) + " emissoras.");
     }
 }
