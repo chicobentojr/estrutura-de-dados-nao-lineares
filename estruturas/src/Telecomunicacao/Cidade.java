@@ -37,6 +37,6 @@ public class Cidade {
 
     @Override
     public String toString() {
-        return ((Integer) this.indice).toString();
+        return ((Integer)(1 + this.indice)).toString();
     }
 }

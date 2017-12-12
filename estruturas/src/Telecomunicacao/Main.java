@@ -63,17 +63,18 @@ public class Main {
         
         int i = 1;
         while(!vertices.isEmpty()) {
-            Vertice v = vertices.remove(0);
+            Vertice v = vertices.get(0);
             emissoras[((Cidade)v.getValor()).getIndice()] = i;
             List<Vertice> vNaoAdjacentes = new ArrayList();
+            vNaoAdjacentes.add(v);
             for (Iterator<Vertice> it = vertices.iterator(); it.hasNext();) {
                 Vertice w = it.next();
-                if (!grafo.eAdjacente(v, w)) {
+                if (eNaoAdjacente(grafo, vNaoAdjacentes, w)) {
                     emissoras[((Cidade)w.getValor()).getIndice()] = i;
                     vNaoAdjacentes.add(w);
                 }
             }
-            printListVertice("Não adjacentes a " + v.getValor(), grafo, vNaoAdjacentes);
+//            printListVertice("Não adjacentes a " + v.getValor(), grafo, vNaoAdjacentes);
             vertices.removeAll(vNaoAdjacentes);
             i++;
         }
@@ -83,6 +84,10 @@ public class Main {
          */
         
         System.out.println("\n\nSão necessário: " + (i-1) + " emissoras.\n");
+//        for (int j = 0; j < emissoras.length; j++) {
+//            System.out.print(emissoras[j] + ", ");
+//        }
+//        System.out.println("");
         
         ArrayList mapa[] = new ArrayList[i-1];
         
@@ -99,7 +104,7 @@ public class Main {
         for (int j = 0; j < mapa.length; j++) {
             System.out.println("Emissora " + (j + 1));
             for (Cidade c : (ArrayList<Cidade>)mapa[j]) {
-                System.out.println(c.getNome() + " (" + c.getIndice() + ")");
+                System.out.println(c.getNome() + " (" + (((Integer)c.getIndice()) + 1) + ")");
             }
             System.out.println("");
         }
@@ -109,9 +114,16 @@ public class Main {
     private static void printListVertice(String s, Grafo grafo, List<Vertice> l) {
         System.out.print(s + " [");
         for (int i = 0; i < l.size(); i++) {
-            System.out.print("(" + ((Cidade)l.get(i).getValor()).getIndice() + ", " + grafo.grau(l.get(i)) + ")" + (i < l.size() - 1 ? ", " : ""));
+            System.out.print("(" + ((Cidade)l.get(i).getValor()) + ", " + grafo.grau(l.get(i)) + ")" + (i < l.size() - 1 ? ", " : ""));
         }
         System.out.println("]");
+    }
+    
+    private static boolean eNaoAdjacente(Grafo grafo, List<Vertice> lv, Vertice v) {
+        for (int i = 0; i < lv.size(); i++) {
+            if (grafo.eAdjacente(lv.get(i), v)) return false; 
+        }
+        return true;
     }
     
 }
